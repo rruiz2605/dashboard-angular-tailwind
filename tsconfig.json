@@ -3,6 +3,13 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "@env/*": ["./src/environments/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@services/*": ["./src/app/shared/services/*"],
+      "@models/*": ["./src/app/shared/models/*"],
+    },
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,

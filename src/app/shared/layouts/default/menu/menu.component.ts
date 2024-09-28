@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, output, signal } from '@angular/core';
-import { FileReaderService } from '../../../services/file-reader.service';
+import { FileReaderService } from '@services/file-reader.service';
 import { SafeHtml } from '@angular/platform-browser';
 import { forkJoin } from 'rxjs';
-import { IMenuItem } from '../../../models/menu';
+import { IMenuItem } from '@models/menu';
 
 @Component({
   selector: 'app-menu',
