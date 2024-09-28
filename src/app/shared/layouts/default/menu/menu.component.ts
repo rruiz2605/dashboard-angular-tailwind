@@ -3,6 +3,7 @@ import { Component, output, signal } from '@angular/core';
 import { FileReaderService } from '../../../services/file-reader.service';
 import { SafeHtml } from '@angular/platform-browser';
 import { forkJoin } from 'rxjs';
+import { IMenuItem } from '../../../models/menu';
 
 @Component({
   selector: 'app-menu',
@@ -21,9 +22,8 @@ export class MenuComponent {
   modeIcon = signal<SafeHtml>('');
   bellIcon = signal<SafeHtml>('');
   expandIcon = signal<SafeHtml>('');
-  homeIcon = signal<SafeHtml>('');
-  tableIcon = signal<SafeHtml>('');
-  graphIcon = signal<SafeHtml>('');
+
+  menuItems = signal<IMenuItem[]>([]);
 
   constructor(private fileReaderService: FileReaderService) {
     forkJoin([
@@ -40,9 +40,24 @@ export class MenuComponent {
       this.modeIcon.set(moon);
       this.bellIcon.set(bell);
       this.expandIcon.set(expand);
-      this.homeIcon.set(home);
-      this.tableIcon.set(table);
-      this.graphIcon.set(graph);
+
+      this.menuItems.set([
+        {
+          title: 'Home',
+          icon: home,
+          url: ''
+        },
+        {
+          title: 'Table',
+          icon: table,
+          url: '/table'
+        },
+        {
+          title: 'Graph',
+          icon: graph,
+          url: '/graph'
+        }
+      ]);
     });
   }
 
