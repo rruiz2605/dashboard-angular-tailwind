@@ -12,15 +12,17 @@ export class MenuComponent {
   isOpenNav = signal(false);
   mode = signal('light');
   changeStateNav = output<boolean>();
-  changeMode = output<string>();
 
   toggleNav() {
     this.isOpenNav.update(x => !x);
     this.changeStateNav.emit(this.isOpenNav());
   }
 
-  setMode(mode: string) {
+  setMode(mode: 'dark' | 'light') {
     this.mode.set(mode);
-    this.changeMode.emit(this.mode());
+    if (this.mode() === 'dark') 
+      document.documentElement.classList.add('dark');
+    else
+      document.documentElement.classList.remove('dark');
   }
 }
