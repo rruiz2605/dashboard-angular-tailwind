@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, output, signal } from '@angular/core';
+import { Component, OnInit, output, signal } from '@angular/core';
 import { FileReaderService } from '@services/file-reader.service';
 import { SafeHtml } from '@angular/platform-browser';
 import { forkJoin } from 'rxjs';
@@ -12,20 +12,23 @@ import { IMenuItem } from '@models/menu';
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
   isOpenNav = signal(false);
   changeStateNav = output<boolean>();
   isDark = signal(false);
 
-  sunIcon = signal<SafeHtml>('');
-  moonIcon = signal<SafeHtml>('');
+  sunIcon: SafeHtml = '';
+  moonIcon:SafeHtml = '';
   modeIcon = signal<SafeHtml>('');
   bellIcon = signal<SafeHtml>('');
   expandIcon = signal<SafeHtml>('');
 
   menuItems = signal<IMenuItem[]>([]);
+  selectOption = output<IMenuItem>();
 
-  constructor(private fileReaderService: FileReaderService) {
+  constructor(private fileReaderService: FileReaderService) {}
+  
+  ngOnInit(): void {
     forkJoin([
       this.fileReaderService.readSVG('icons/sun.svg'),
       this.fileReaderService.readSVG('icons/moon.svg'),
@@ -35,8 +38,8 @@ export class MenuComponent {
       this.fileReaderService.readSVG('icons/table.svg'),
       this.fileReaderService.readSVG('icons/graph.svg'),
     ]).subscribe(([sun, moon, bell, expand, home, table, graph]) => {
-      this.sunIcon.set(sun);
-      this.moonIcon.set(moon);
+      this.sunIcon = sun;
+      this.moonIcon = moon;
       this.modeIcon.set(moon);
       this.bellIcon.set(bell);
       this.expandIcon.set(expand);
@@ -58,6 +61,8 @@ export class MenuComponent {
           url: '/graph'
         }
       ]);
+
+      this.selectOption.emit(this.menuItems()[0]);
     });
   }
 
@@ -70,11 +75,15 @@ export class MenuComponent {
     this.isDark.update(x => !x);
     if (this.isDark()) {
       document.documentElement.classList.add('dark');
-      this.modeIcon.set(this.sunIcon());
+      this.modeIcon.set(this.sunIcon);
     }
     else {
       document.documentElement.classList.remove('dark');
-      this.modeIcon.set(this.moonIcon());
+      this.modeIcon.set(this.moonIcon);
     }
+  }
+
+  selectOptionClick(item: IMenuItem) {
+    this.selectOption.emit(item);
   }
 }

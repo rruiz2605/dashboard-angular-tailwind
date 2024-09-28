@@ -2,11 +2,12 @@
 <div [ngClass]="{'': mode() == 'dark'}">
     <app-header [isOpenNav]="isOpenNav()" />
 
-    <app-menu (changeStateNav)="isOpenNav.set($event)" />
+    <app-menu (changeStateNav)="isOpenNav.set($event)" (selectOption)="seletedMenuItem.set($event)"/>
     
     <!-- CONTENT -->
     <div class="content ml-12 transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 "
         [ngClass]="{'md:ml-60': isOpenNav()}">
+        <app-breadcrumb [icon]="seletedMenuItem().icon ?? ''" [title]="seletedMenuItem().title ?? ''" />
         <router-outlet />
     </div>
 </div>
